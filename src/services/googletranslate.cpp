@@ -170,9 +170,16 @@ bool GoogleTranslate::parseReply(const QByteArray &reply)
     m_detectedLanguage = Language(detected, getLanguageName(detected));
 
     m_translation.clear();
+    m_translit.clear();
+    QString src_translit;
+    QString translit;
     foreach (const QVariant &ti, data.toMap().value("sentences").toList()) {
         m_translation.append(ti.toMap().value("trans").toString());
+        src_translit.append(ti.toMap().value("src_translit").toString());
+        translit.append(ti.toMap().value("translit").toString());
     }
+    m_translit.insert("sourceText", src_translit);
+    m_translit.insert("translatedText", translit);
 
     m_dict->clear();
     if (data.toMap().value("dict").type() == QVariant::List) {

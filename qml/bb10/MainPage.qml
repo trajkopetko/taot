@@ -113,6 +113,24 @@ Page {
             }
 
             Container {
+                id: sourceTranslit
+
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                bottomMargin: 20
+                visible: translator.translit.sourceText.length > 0
+
+                Label {
+                    text: qsTr("Transliteration:") + Retranslate.onLocaleOrLanguageChanged
+                }
+                Label {
+                    text: translator.translit.sourceText
+                    textStyle {
+                        fontStyle: FontStyle.Italic
+                    }
+                }
+            }
+
+            Container {
                 layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
 
                 Container {
@@ -157,6 +175,22 @@ Page {
                 editable: false
                 textFormat: TextFormat.Plain
                 visible: translator.supportsTranslation
+            }
+
+            Container {
+                layout: StackLayout { orientation: LayoutOrientation.LeftToRight }
+                bottomMargin: 15
+                visible: translator.translit.translatedText.length > 0
+
+                Label {
+                    text: qsTr("Transliteration:") + Retranslate.onLocaleOrLanguageChanged
+                }
+                Label {
+                    text: translator.translit.translatedText
+                    textStyle {
+                        fontStyle: FontStyle.Italic
+                    }
+                }
             }
 
             Container {

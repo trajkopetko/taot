@@ -71,6 +71,7 @@ public:
     virtual bool parseReply(const QByteArray &reply) = 0;
 
     virtual QString translation() const;
+    virtual QVariantMap translit() const;
     virtual Language detectedLanguage() const;
 
     virtual QString errorString() const;
@@ -92,6 +93,7 @@ protected:
 
     QString m_error;
     QString m_translation;
+    QVariantMap m_translit;
     Language m_detectedLanguage;
 };
 

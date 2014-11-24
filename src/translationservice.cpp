@@ -91,6 +91,11 @@ QString TranslationService::translation() const
     return m_translation;
 }
 
+QVariantMap TranslationService::translit() const
+{
+    return m_translit;
+}
+
 Language TranslationService::detectedLanguage() const
 {
     return m_detectedLanguage;

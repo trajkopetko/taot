@@ -42,6 +42,14 @@
 #   include <QTextDocument>
 #endif
 
+inline QVariantMap emptyTranslit()
+{
+    QVariantMap translit;
+    translit.insert("sourceText", QString());
+    translit.insert("translatedText", QString());
+    return translit;
+}
+
 TranslationInterface::TranslationInterface(QObject *parent)
     : QObject(parent)
     , m_service(NULL)
@@ -51,6 +59,7 @@ TranslationInterface::TranslationInterface(QObject *parent)
     , m_targetLanguages(new LanguageListModel(this))
     , m_sourceLanguage(NULL)
     , m_targetLanguage(NULL)
+    , m_translit(emptyTranslit())
     , m_dict(new DictionaryModel(this))
 #ifdef Q_OS_SAILFISH
     , m_settings(new QSettings("harbour-taot", "taot", this))
@@ -157,6 +166,11 @@ QString TranslationInterface::detectedLanguageName() const
 QString TranslationInterface::translatedText() const
 {
     return m_translation;
+}
+
+QVariantMap TranslationInterface::translit() const
+{
+    return m_translit;
 }
 
 DictionaryModel *TranslationInterface::dictionary() const
@@ -380,6 +394,7 @@ void TranslationInterface::resetTranslation()
     m_service->cancelTranslation();
     m_service->clear();
     setTranslatedText(QString());
+    setTranslit(emptyTranslit());
     setDetectedLanguage(Language());
     m_dict->clear();
 }
@@ -408,6 +423,15 @@ void TranslationInterface::setTranslatedText(const QString &translatedText)
     emit translatedTextChanged();
 }
 
+void TranslationInterface::setTranslit(const QVariantMap &translit)
+{
+    if (m_translit == translit)
+        return;
+
+    m_translit = translit;
+    emit translitChanged();
+}
+
 void TranslationInterface::onTranslationFinished()
 {
     setBusy(false);
@@ -418,6 +442,7 @@ void TranslationInterface::onTranslationFinished()
     }
 
     setTranslatedText(m_service->translation());
+    setTranslit(m_service->translit());
     setDetectedLanguage(m_service->detectedLanguage());
 }
 
