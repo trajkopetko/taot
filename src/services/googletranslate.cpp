@@ -194,8 +194,10 @@ bool GoogleTranslate::parseReply(const QByteArray &reply)
         return false;
 
     const QVariantList dl = data.toList();
-    if (dl.isEmpty())
+    if (dl.isEmpty()) {
+        m_error = tr("%1 service returned an empty result").arg(displayName());
         return false;
+    }
 
     const QString detected = dl.value(2).toString();
     m_detectedLanguage = Language(detected, getLanguageName(detected));
